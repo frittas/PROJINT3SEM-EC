@@ -11,24 +11,24 @@ https://blog.logrocket.com/data-visualization-angular-d3-js/#setting-up-angular-
 ## Get started
 
 
-### Prerequisites
+### Pré Requisitos
 
-1. Install [Node.js](https://nodejs.org)
-2. Install Angular CLI by running the following command:
+1. Instalar [Node.js](https://nodejs.org)
+2. Instalar CLI Angular executando o comando no terminal:
   ```bash
   npm i -g @angular/cli
   ```
 
-### Clone the repo
+### Clonar o Repositório
 
 ```shell
 git clone https://github.com/frittas/PROJINT3SEM-EC
 cd PROJINT3SEM-EC
 ```
 
-### Install npm packages
+### Instalar as dependências NPM
 
-Install the `npm` packages described in the `package.json` and verify that it works:
+Instalar os packages `npm` contidos no arquivo `package.json` e verificar se tudo corre como esperado:
 
 ```shell
 npm install
@@ -36,16 +36,16 @@ npm start
 ```
 
 
-## Development server
+## Ambiente de Desenvolvimento
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Executar `ng serve` para o ambiente de desenvolvimento. Navegar para `http://localhost:4200/`. A aplicação irá se atualizar automaticamente após quaisquer alterações.
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Executar `ng generate component component-name` para gerar um novo componente. Você também pode usar `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Executar `ng build` para construir o projeto. O resultado do build será armazenado no diretório `dist/`.
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
