@@ -1,7 +1,35 @@
 # PROJINT3SEMEC
 
-Projeto Integrador 3Sem Engenharia Comp - Unisal
+Projeto Integrador 3Sem Engenharia Comp - Unisal  
 https://blog.logrocket.com/data-visualization-angular-d3-js/#setting-up-angular-d3
+
+
+## Get started
+
+
+### Prerequisites
+
+1. Install [Node.js](https://nodejs.org)
+2. Install Angular CLI by running the following command:
+  ```bash
+  npm i -g @angular/cli
+  ```
+
+### Clone the repo
+
+```shell
+git clone https://github.com/frittas/PROJINT3SEM-EC
+cd PROJINT3SEM-EC
+```
+
+### Install npm packages
+
+Install the `npm` packages described in the `package.json` and verify that it works:
+
+```shell
+npm install
+npm start
+```
 
 
 ## Development server
