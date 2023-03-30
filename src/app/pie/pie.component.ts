@@ -12,10 +12,12 @@ export class PieComponent implements OnInit {
   @ViewChild('host')
   el!: ElementRef;
   @Input() dataUrl = '';
-  @Input() title = '';
+  @Input() titleText = '';
 
 
   ngAfterViewInit() {
+
+    var div = d3.select("body").append("div").attr("class", "tooltip");
     var svg = d3.select(this.el.nativeElement),
       width = parseInt(svg.attr("width")),
       height = parseInt(svg.attr("height")),
@@ -46,7 +48,9 @@ export class PieComponent implements OnInit {
       var arc = g.selectAll(".arc")
         .data(pie(data))
         .enter().append("g")
-        .attr("class", "arc");
+        .attr("class", "arc")
+        .on("mouseover", () => { })
+        .on("mouseout", () => { })
 
       arc.append("path")
         .attr("d", path)
@@ -58,12 +62,18 @@ export class PieComponent implements OnInit {
         .attr("transform", (d: any) => "translate(" + label.centroid(d) + ")")
         .text((d: any) => d.data.label);
 
+      arc.append('title')
+        .text((d: any) => `${d.data.label} - ${d.data.value}`);
+
+
+      arc.append("div").attr("class", "toolTip");
+
     }).catch(error => console.error(error));
 
     svg.append("g")
       .attr("transform", "translate(" + (width / 2 - 75) + "," + 15 + ")")
       .append("text")
-      .text(this.title)
+      .text(this.titleText)
       .attr("class", "title")
   }
 
