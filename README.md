@@ -1,6 +1,10 @@
 # PROJINT3SEMEC
 
 Projeto Integrador 3Sem Engenharia Comp - Unisal  
+
+Desenvolvimento de uma plataforma que tem como objetivo análise de arquivos CSV e os transformando em CHARTS customizáveis. Disponibilizando flexibilidade de visualização baseada na configuração do arquivo.
+
+
 https://blog.logrocket.com/data-visualization-angular-d3-js/#setting-up-angular-d3
 
 
