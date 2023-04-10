@@ -17,8 +17,7 @@ export class PieComponent implements OnInit {
 
   ngAfterViewInit() {
 
-    var div = d3.select("body").append("div").attr("class", "tooltip");
-    var svg = d3.select(this.el.nativeElement),
+    const svg = d3.select(this.el.nativeElement),
       width = parseInt(svg.attr("width")),
       height = parseInt(svg.attr("height")),
       radius = Math.min(width, height) / 2.2,
@@ -32,20 +31,18 @@ export class PieComponent implements OnInit {
       .value((d: any) => d.value);
 
 
-    var path = d3.arc<d3.PieArcDatum<any>>()
+    const path = d3.arc<d3.PieArcDatum<any>>()
       .outerRadius(radius - 10)
       .innerRadius(0);
 
 
-    var label = d3.arc()
+    const label = d3.arc()
       .outerRadius(radius)
       .innerRadius(radius - 80);
 
 
     d3.csv(this.dataUrl).then((data) => {
-
-
-      var arc = g.selectAll(".arc")
+      const arc = g.selectAll(".arc")
         .data(pie(data))
         .enter().append("g")
         .attr("class", "arc")
@@ -71,10 +68,10 @@ export class PieComponent implements OnInit {
     }).catch(error => console.error(error));
 
     svg.append("g")
-      .attr("transform", "translate(" + (width / 2 - 75) + "," + 15 + ")")
+      .attr("transform", "translate(" + (width / 2 - 105) + "," + 15 + ")")
       .append("text")
       .text(this.titleText)
-      .attr("class", "title")
+      .attr("class", "title");
   }
 
   ngOnInit(): void {
