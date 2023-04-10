@@ -8,6 +8,21 @@ Desenvolvimento de uma plataforma que tem como objetivo análise de arquivos CSV
 https://blog.logrocket.com/data-visualization-angular-d3-js/#setting-up-angular-d3
 
 
+
+## Checklist
+
+- [x] Criar o Projeto Angular
+- [x] Adicionar dependências do D3
+- [x] Criar Componente de gráfico PIE
+- [x] Criar estrutura de side-menu
+- [X] Criar estrutura de Rotas para exibir o Dashboard
+- [ ] Criar Componente de gráfico BAR
+- [ ] Criar Componente de gráfico LINE
+- [ ] Adicionar método de leitura de arquivo CSV externo ao projeto
+- [ ] Adicionar criação dinâmica de itens no dash
+- [ ] Fazer o deploy do projeto no Google Firebase
+
+
 ## Get started
 
 
