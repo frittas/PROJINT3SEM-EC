@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HomeComponent } from './home/home.component';
 import { BarComponent } from './bar/bar.component';
+import { LineComponent } from './line/line.component';
 
 
 
@@ -26,6 +27,7 @@ import { BarComponent } from './bar/bar.component';
     ContentComponent,
     HomeComponent,
     BarComponent,
+    LineComponent,
   ],
   imports: [
     BrowserModule,
