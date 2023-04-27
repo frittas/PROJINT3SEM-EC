@@ -14,6 +14,7 @@ import { ContentComponent } from './content/content.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HomeComponent } from './home/home.component';
+import { BarComponent } from './bar/bar.component';
 
 
 
@@ -24,6 +25,7 @@ import { HomeComponent } from './home/home.component';
     PieComponent,
     ContentComponent,
     HomeComponent,
+    BarComponent,
   ],
   imports: [
     BrowserModule,
