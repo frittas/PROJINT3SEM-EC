@@ -18,9 +18,9 @@ export class LineComponent implements OnInit {
   ngAfterViewInit() {
 
     var svg = d3.select("svg"),
-      margin = 200,
-      width = parseInt(svg.attr("width")),
-      height = parseInt(svg.attr("height"));
+      margin = 50,
+      width = parseInt(svg.attr("width")) - margin,
+      height = parseInt(svg.attr("height")) - margin;
 
     var xScale = d3.scaleLinear().domain([0, 100]).range([0, width]),
       yScale = d3.scaleLinear().domain([0, 200]).range([height, 0]);
@@ -59,16 +59,16 @@ export class LineComponent implements OnInit {
 
     d3.csv(this.dataUrl).then((data) => {
 
-      svg.append('g')
-      .selectAll("dot")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("cx", function (d) { return xScale(d['xAxis']); } )
-      .attr("cy", function (d) { return yScale(d['yAxis']); } )
-      .attr("r", 2)
-      .attr("transform", "translate(" + 100 + "," + 100 + ")")
-      .style("fill", "#CC0000");
+      // svg.append('g')
+      // .selectAll("dot")
+      // .data(data)
+      // .enter()
+      // .append("circle")
+      // .attr("cx", function (d) { return xScale(d['xAxis']); } )
+      // .attr("cy", function (d) { return yScale(d['yAxis']); } )
+      // .attr("r", 2)
+      // .attr("transform", "translate(" + 100 + "," + 100 + ")")
+      // .style("fill", "#CC0000");
 
       
 
