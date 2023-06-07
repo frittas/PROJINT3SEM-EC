@@ -14,55 +14,62 @@ export class BarComponent implements OnInit {
   @Input() dataUrl = '';
   @Input() titleText = '';
 
-  ngOnInit() {
-    this.loadData();
-  }
+  private svg: any;
+  private margin = 50;
+  private width = 750 - (this.margin * 2);
+  private height = 400 - (this.margin * 2);
 
   loadData() {
     d3.csv(this.dataUrl).then((data) => {
-      this.createChart(data);
+      this.drawBars(data);
     });
   }
 
-  createChart(data: any[]) {
+  drawBars(data: any[]): void {
 
-    var svg = d3.select("svg"),
-      margin = 50,
-      width = parseInt(svg.attr("width")) - margin,
-      height = parseInt(svg.attr("height")) - margin;
+    this.svg = d3.select("svg")
+      .append("svg")
+      .attr("width", this.width + (this.margin * 2))
+      .attr("height", this.height + (this.margin * 2))
+      .append("g")
+      .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
+    // Create the X-axis band scale
+    const x = d3.scaleBand()
+      .range([0, this.width])
+      .domain(data.map(d => d.label))
+      .padding(0.2);
 
+    // Draw the X-axis on the DOM
+    this.svg.append("g")
+      .attr("transform", "translate(0," + this.height + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
 
-    var xScale = d3.scaleBand().range ([0, width]).padding(0.4),
-      yScale = d3.scaleLinear().range ([height, 0]);
+    // Create the Y-axis band scale
+    const y = d3.scaleLinear()
+      .domain([0, 40])
+      .range([this.height, 0]);
 
-    var g = svg.append("g")
-      .attr("transform", "translate(" + 100 + "," + 100 + ")");
+    // Draw the Y-axis on the DOM
+    this.svg.append("g")
+      .call(d3.axisLeft(y));
 
-
-      xScale.domain(data.map(d => d.label));
-      yScale.domain([0, d3.max(data, d => d.value)]);
-  
-
-    g.append('g') //X
-      .attr('class', 'axis axis-x')
-      .attr('transform', 'translate(0,' + height + ')')
-      .call(d3.axisBottom(xScale).ticks(10));
-
-    g.append('g') //Y
-      .attr('class', 'axis axis-y')
-      .call(d3.axisLeft(yScale).ticks(5));
-
-    g.selectAll('.bar')
+    // Create and fill the bars
+    this.svg.selectAll("bars")
       .data(data)
-      .enter().append('rect')
-      .attr('class', 'bar')
-      .attr('xScale', d => xScale(d.label))
-      .attr('yScale', d => yScale(+d.value))
-      .attr('width', xScale.bandwidth())
-      .attr('height', d => height - yScale(+d.value));
+      .enter()
+      .append("rect")
+      .attr("x", (d: any) => x(d.label))
+      .attr("y", (d: any) => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", (d: any) => this.height - y(d.value))
+      .attr("fill", "#d04a35");
+  }
 
-
-      
+  ngOnInit() {   
+    this.loadData();        
   }
 
 }
