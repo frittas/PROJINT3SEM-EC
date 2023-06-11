@@ -9,7 +9,7 @@ import * as Papa from 'papaparse';
   styleUrls: ['./pie.component.scss']
 })
 export class PieComponent implements OnInit {
-  @ViewChild('host')
+  @ViewChild('hostPie')
   el!: ElementRef;
   @Input() dataUrl = '';
   @Input() titleText = '';

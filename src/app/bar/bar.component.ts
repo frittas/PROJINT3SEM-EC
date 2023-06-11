@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 
 export class BarComponent implements OnInit {
 
-  @ViewChild('host', { static: true })
+  @ViewChild('hostBar')
   el!: ElementRef;
   @Input() dataUrl = '';
   @Input() titleText = '';
@@ -25,11 +25,29 @@ export class BarComponent implements OnInit {
     });
   }
 
-  drawBars(data: any[]): void {
 
-    this.svg = d3.select("svg")
+
+  ngAfterViewInit() {
+    this.loadData();
+  }
+
+  drawBars(data: any[]): void {
+    const width = data.length * 150;
+
+
+    const height = data.reduce((acc, curr) => {
+      if (curr.value > acc) {
+        acc = curr.value
+      }
+      return parseInt(acc);
+    }, 0)
+
+    this.el.nativeElement.setAttribute('width', width);
+    this.el.nativeElement.setAttribute('height', this.height + (this.margin * 2));
+
+    this.svg = d3.select(this.el.nativeElement)
       .append("svg")
-      .attr("width", this.width + (this.margin * 2))
+      .attr("width", width + (this.margin * 2))
       .attr("height", this.height + (this.margin * 2))
       .append("g")
       .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
@@ -49,12 +67,14 @@ export class BarComponent implements OnInit {
 
     // Create the Y-axis band scale
     const y = d3.scaleLinear()
-      .domain([0, 40])
+      .domain([0, height + 20])
       .range([this.height, 0]);
 
     // Draw the Y-axis on the DOM
     this.svg.append("g")
       .call(d3.axisLeft(y));
+
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     // Create and fill the bars
     this.svg.selectAll("bars")
@@ -65,11 +85,21 @@ export class BarComponent implements OnInit {
       .attr("y", (d: any) => y(d.value))
       .attr("width", x.bandwidth())
       .attr("height", (d: any) => this.height - y(d.value))
-      .attr("fill", "#d04a35");
+      .attr("fill", (d: any) => color(d.label))
+      .append('title')
+      .text((d: any) => `${d.label} - ${d.value}`);
+
+      this.svg.append("g")
+      .attr("transform", "translate(" + (width / 2 - 105) + "," + 15 + ")")
+      .append("text")
+      .text(this.titleText)
+      .attr("class", "title");
+
   }
 
-  ngOnInit() {   
-    this.loadData();        
+
+  ngOnInit(): void {
+
   }
 
 }
