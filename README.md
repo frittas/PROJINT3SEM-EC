@@ -17,10 +17,10 @@ https://blog.logrocket.com/data-visualization-angular-d3-js/#setting-up-angular-
 - [x] Criar estrutura de side-menu
 - [X] Criar estrutura de Rotas para exibir o Dashboard
 - [X] Criar Componente de gráfico BAR
-- [ ] Criar Componente de gráfico LINE
-- [ ] Adicionar método de leitura de arquivo CSV externo ao projeto
-- [ ] Adicionar criação dinâmica de itens no dash
-- [ ] Fazer o deploy do projeto no Google Firebase
+- [X] Criar Componente de gráfico LINE
+- [X] Adicionar método de leitura de arquivo CSV externo ao projeto
+- [X] Adicionar criação dinâmica de itens no dash
+- [-] Fazer o deploy do projeto no Google Firebase
 
 
 ## Get started
