@@ -7,6 +7,7 @@ import { BarComponent } from '../bar/bar.component';
 import { LineComponent } from '../line/line.component';
 import { ChartComponent } from '../chart.component';
 import { ChartService } from '../chart-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content',
@@ -17,7 +18,7 @@ export class ContentComponent implements OnInit {
 
   @ViewChild(ChartHostDirective, { static: true }) chartHost!: ChartHostDirective;
 
-  constructor(private dialog: MatDialog, private chartService: ChartService) {
+  constructor(private dialog: MatDialog, private chartService: ChartService, private router: Router) {
   }
 
   chartList: any[] = [];
@@ -79,5 +80,13 @@ export class ContentComponent implements OnInit {
     const viewContainerRef = this.chartHost.viewContainerRef;
     const index = viewContainerRef.indexOf(hostView)
     if (index != -1) viewContainerRef.remove(index)
+  }
+
+  emptyDash() {
+    this.chartService.clear();
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 }
