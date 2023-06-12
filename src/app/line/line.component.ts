@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import * as Papa from 'papaparse';
+import { ChartComponent } from '../chart.component';
 
 @Component({
   selector: 'line',
@@ -8,82 +8,120 @@ import * as Papa from 'papaparse';
   styleUrls: ['./line.component.scss']
 })
 
-export class LineComponent implements OnInit {
+export class LineComponent implements OnInit, ChartComponent {
 
-  @ViewChild('host')
+  @ViewChild('hostLine')
   el!: ElementRef;
   @Input() dataUrl = '';
   @Input() titleText = '';
 
-  ngAfterViewInit() {
-
-    var svg = d3.select("svg"),
-      margin = 50,
-      width = parseInt(svg.attr("width")) - margin,
-      height = parseInt(svg.attr("height")) - margin;
-
-    var xScale = d3.scaleLinear().domain([0, 100]).range([0, width]),
-      yScale = d3.scaleLinear().domain([0, 200]).range([height, 0]);
-
-      svg.append('text')
-      .attr('x', width/2 + 100)
-      .attr('y', 100)
-      .attr('text-anchor', 'middle')
-      .style('font-family', 'Helvetica')
-      .style('font-size', 20)
-      .text('Line Chart');
-      
-      // X label
-      svg.append('text')
-      .attr('x', width/2 + 100)
-      .attr('y', height - 15 + 150)
-      .attr('text-anchor', 'middle')
-      .style('font-family', 'Helvetica')
-      .style('font-size', 12)
-      .text('Independant');
-      
-      // Y label
-      svg.append('text')
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'translate(60,' + height + ')rotate(-90)')
-      .style('font-family', 'Helvetica')
-      .style('font-size', 12)
-      .text('Dependant');
-
-      svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(xScale));
-     
-     svg.append("g")
-      .call(d3.axisLeft(yScale));
-
-    d3.csv(this.dataUrl).then((data) => {
-
-      // svg.append('g')
-      // .selectAll("dot")
-      // .data(data)
-      // .enter()
-      // .append("circle")
-      // .attr("cx", function (d) { return xScale(d['xAxis']); } )
-      // .attr("cy", function (d) { return yScale(d['yAxis']); } )
-      // .attr("r", 2)
-      // .attr("transform", "translate(" + 100 + "," + 100 + ")")
-      // .style("fill", "#CC0000");
-
-      
-
-    });
-
+  loadData() {
+    const data = d3.csvParse(this.dataUrl);
+    this.drawLines(data);
   }
 
- 
- 
- 
- 
- 
- 
+  //Parsers and Formaters
+  private parseTime = d3.timeParse("%d/%m/%Y");
+
+  private margin = { top: 40, right: 40, bottom: 40, left: 60 };
+  private width = 700 - this.margin.left - this.margin.right;
+  private height = 400 - this.margin.top - this.margin.bottom;
+
+  ngAfterViewInit() {
+    this.loadData();
+  }
+
+  drawLines(data: any[]): void {
+
+    data = data.reverse();
+    data.forEach((d) => {
+      d.date = this.parseTime(d.date);
+      d.price = Number(d.price);
+    });
+
+    const svg = d3.select(this.el.nativeElement).append("svg")
+      .attr("width", this.width + this.margin.left + this.margin.right)
+      .attr("height", this.height + this.margin.top + this.margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
+
+    // Create the X-axis band scale
+
+    const extX: Date[] = d3.extent(data, (d) => { return d.date; }) as Date[];
+    const extY: Number[] = d3.extent(data, (d) => { return d.value / 1000; }) as Number[];
+
+    const x = d3.scaleTime()
+      .range([0, this.width])
+      .domain(extX)
+    const y = d3.scaleLinear()
+      .range([this.height, 0])
+      .domain(extY)
+
+    // Line
+    const line = d3.line()
+      .x((d: any) => { return x(d.date as Date); })
+      .y((d: any) => { return y(d.value / 1000); })
+
+    // Axes
+    svg.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + this.height + ")")
+      .call(d3.axisBottom(x));
+
+    svg.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y));
+
+    //  Chart Title
+    svg.append("text")
+      .attr("x", (this.width / 2))
+      .attr("y", 20 - (this.margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text(this.titleText);
+
+
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+
+    // Data Lines:
+    svg.append("path")
+      .datum(data)
+      .attr("stroke-width", 1)
+      .attr("stroke", (d: any) => color(d.label))
+      .attr("fill", "none")
+      .attr("d", line)
+      .append('title')
+      .text((d: any) => `${d.date} - ${d.value}`);
+
+    // svg.selectAll(".prices")
+    //   .data(data)
+    //   .enter()
+    //   .append("path")
+    //   .attr("d", line)
+    //   .attr("stroke-width", 5)
+    //   .attr("stroke", "black")
+    //   .attr("fill", "none")
+    //.style("stroke", "rgb(6,120,155)");
+
+    // // Create and fill the bars
+    // this.svg.selectAll("bars")
+    // .data(data)
+    // .enter()
+    // .append("rect")
+    // .attr("x", (d: any) => x(d.label))
+    // .attr("y", (d: any) => y(d.value))
+    // .attr("width", x.bandwidth())
+    // .attr("height", (d: any) => this.height - y(d.value))
+    // .attr("fill", (d: any) => color(d.label))
+    // .append('title')
+    // .text((d: any) => `${d.label} - ${d.value}`);
+  }
+
+
+
+
   ngOnInit(): void {
 
   }
-
 }

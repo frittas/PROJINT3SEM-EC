@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
+import { ChartComponent } from '../chart.component';
 
 @Component({
   selector: 'bar',
@@ -7,7 +8,7 @@ import * as d3 from 'd3';
   styleUrls: ['./bar.component.scss']
 })
 
-export class BarComponent implements OnInit {
+export class BarComponent implements OnInit, ChartComponent {
 
   @ViewChild('hostBar')
   el!: ElementRef;
@@ -20,9 +21,8 @@ export class BarComponent implements OnInit {
   private height = 400 - (this.margin * 2);
 
   loadData() {
-    d3.csv(this.dataUrl).then((data) => {
-      this.drawBars(data);
-    });
+    const data = d3.csvParse(this.dataUrl)
+    this.drawBars(data);
   }
 
 
@@ -89,8 +89,8 @@ export class BarComponent implements OnInit {
       .append('title')
       .text((d: any) => `${d.label} - ${d.value}`);
 
-      this.svg.append("g")
-      .attr("transform", "translate(" + (width / 2 - 105) + "," + 15 + ")")
+    this.svg.append("g")
+      .attr("transform", "translate(" + (this.width / 2 - 105) + "," + 15 + ")")
       .append("text")
       .text(this.titleText)
       .attr("class", "title");

@@ -1,0 +1,14 @@
+.mat-mdc-dialog-content {
+    display: flex;
+    flex-direction: column;
+    
+
+    textarea {
+        width: 420px;
+        height: 350px;
+    }
+}
+
+.mat-mdc-dialog-actions{
+    justify-content: end;
+}
